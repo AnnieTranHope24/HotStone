@@ -17,19 +17,20 @@
 
 package hotstone.tooltestcase;
 
-import hotstone.figuretestcase.doubles.FakeObjectGame;
 import hotstone.framework.Game;
 import hotstone.framework.Player;
+import hotstone.standard.factories.AlphaStoneFactory;
+import hotstone.standard.game.StandardHotStoneGame;
 import hotstone.view.core.HotStoneDrawingType;
 import hotstone.view.core.HotStoneFactory;
+import hotstone.view.tool.MinionAttackTool;
 import minidraw.framework.DrawingEditor;
 import minidraw.standard.MiniDrawApplication;
-import minidraw.standard.SelectionTool;
 
 /** Visual test program to develop minion attack tool */
 public class ShowMinionAttackTool {
   public static void main(String[] args) {
-    Game game = new FakeObjectGame();
+    Game game = new StandardHotStoneGame(new AlphaStoneFactory());
 
     // To enable any testing, we need to field a Card for
     // Findus.
@@ -42,6 +43,6 @@ public class ShowMinionAttackTool {
                             HotStoneDrawingType.HOTSEAT_MODE));
     editor.open();
     // TODO: Solve exercise by developing a MinionAttackTool
-    editor.setTool(new SelectionTool(editor));
+    editor.setTool(new MinionAttackTool(editor, game, Player.FINDUS));
   }
 }

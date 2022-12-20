@@ -20,6 +20,8 @@ package hotstone.tooltestcase;
 import hotstone.figuretestcase.doubles.FakeObjectGame;
 import hotstone.framework.Game;
 import hotstone.framework.Player;
+import hotstone.standard.factories.AlphaStoneFactory;
+import hotstone.standard.game.StandardHotStoneGame;
 import hotstone.view.core.HotStoneDrawingType;
 import hotstone.view.core.HotStoneFactory;
 import hotstone.view.tool.EndTurnTool;
@@ -29,8 +31,8 @@ import minidraw.standard.MiniDrawApplication;
 /** Demonstration of EndTurnTool */
 public class ShowEndTurnTool {
   public static void main(String[] args) {
-    Game game = new FakeObjectGame();
-
+   // Game game = new FakeObjectGame();
+    Game game = new StandardHotStoneGame(new AlphaStoneFactory());
     DrawingEditor editor =
             new MiniDrawApplication( "Click End of Turn button to enact 'end of turn' tool",
                     new HotStoneFactory(game, Player.FINDUS,

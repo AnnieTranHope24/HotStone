@@ -3,6 +3,7 @@ package hotstone.standard.cards;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import hotstone.framework.Card;
 import hotstone.framework.Player;
 import hotstone.standard.cards.cardeffects.NullCardEffect;
 
@@ -18,6 +19,7 @@ public class TestField {
       field.addCard(new CardImpl("Uno", 11, 3, 21, false, Player.FINDUS, new NullCardEffect()));
       field.addCard(new CardImpl("Tres", 11, 3, 21, false, Player.FINDUS, new NullCardEffect()));
       field.addCard(new CardImpl("Dos", 11, 3, 21, false, Player.FINDUS, new NullCardEffect()));
+
     }
   
     @Test
@@ -37,5 +39,15 @@ public class TestField {
         field.addCard(new CardImpl("Cuatro", 2, 3, 1, false, Player.FINDUS, new NullCardEffect()));
         assertThat(field.getCardInField(0).getName(), is("Cuatro"));
     }     
+
+    @Test
+    public void shouldRemoveACard() {
+      Card removeCard = new CardImpl("Dos", 11, 3, 21, false, Player.FINDUS, new NullCardEffect());
+      int fieldSize = field.getFieldSize();
+      field.addCard(removeCard);
+      assertThat(field.getFieldSize(), is(fieldSize + 1));
+      field.removeCardFromField(removeCard);
+      assertThat(field.getFieldSize(), is(fieldSize));
+    }
   
 }

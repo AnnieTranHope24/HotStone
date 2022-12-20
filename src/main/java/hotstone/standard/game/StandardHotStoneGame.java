@@ -21,6 +21,7 @@ import static hotstone.framework.Player.FINDUS;
 import static hotstone.framework.Player.PEDDERSEN;
 import hotstone.framework.*;
 import hotstone.observer.GameObserver;
+import hotstone.observer.ObserverHandler;
 import hotstone.standard.cards.CardImpl;
 import hotstone.standard.cards.Field;
 import hotstone.standard.cards.cardeffects.cardeffecthandler.CardEffectHandler;
@@ -52,12 +53,14 @@ import hotstone.standard.winconditions.WinConditionStrategy;
  */
 public class StandardHotStoneGame implements GameMutator {
 
+  private int testVal;
   private int turn;
   private HeroMutator hero1;
   private HeroMutator hero2;
   private WinConditionStrategy conditionStrategy;
   private Field field;
   private CardEffectHandler cardEffectHandler;
+  private ObserverHandler observerHandler;
   // private GameMutator gameMutator;
 
   public StandardHotStoneGame(Factory factory) {
@@ -68,6 +71,7 @@ public class StandardHotStoneGame implements GameMutator {
 
     hero1 = new HeroImpl(FINDUS, 21, factory.getManaManipulatorStrategy(), factory.getHeroPower(FINDUS), field, factory.getDeck(FINDUS));
     hero2 = new HeroImpl(PEDDERSEN, 21, factory.getManaManipulatorStrategy(), factory.getHeroPower(PEDDERSEN), field, factory.getDeck(PEDDERSEN));
+    observerHandler = new ObserverHandler();
   }
 
   @Override
@@ -154,6 +158,7 @@ public class StandardHotStoneGame implements GameMutator {
       
   }    
     turn++;
+    observerHandler.notifyTurnChangeTo(Player.FINDUS);
   }
 
   @Override
@@ -170,15 +175,22 @@ public class StandardHotStoneGame implements GameMutator {
     if(hero.getMana() >= card.getManaCost()) {
       hero.playCard(card);
       cardEffectHandler.useEffect(this, (CardImpl)card);
+      observerHandler.notifyPlayCard(who, card);
       return Status.OK;
     }
 
     return Status.NOT_ENOUGH_MANA;
   }
 
+  private boolean findTauntMinion(Player who){
+    Field field = getTheField();
+    return false;
+  }
+
   @Override
   public Status attackCard(Player playerAttacking, Card attackingCard, Card defendingCard) {
     HeroMutator hero = getHeroM(playerAttacking);
+    Player opponent = Utility.computeOpponent(playerAttacking);
     if(attackingCard.getOwner() != playerAttacking){
       return Status.NOT_OWNER;
     }
@@ -191,15 +203,24 @@ public class StandardHotStoneGame implements GameMutator {
     if(defendingCard.getOwner() == playerAttacking){
       return Status.ATTACK_NOT_ALLOWED_ON_OWN_MINION;
     }
+    //add loop to check through the opponent's field if he has played any taunt minions.
+    // If he has, then return the appropriate status b/c you can't attack a non-taunt minion
+    // if a taunt minion has been played by the opponent. Can call findTauntMinion method
+    // to determine if the opponent has played any taunt minions.
+    observerHandler.notifyAttackCard(playerAttacking, attackingCard, defendingCard);
 
     ((CardImpl) defendingCard).changeHealth(-attackingCard.getAttack());
     ((CardImpl) attackingCard).setActive(false);
     ((CardImpl) attackingCard).changeHealth(-defendingCard.getAttack());
+    observerHandler.notifyCardUpdate(defendingCard);
+    observerHandler.notifyCardUpdate(attackingCard);
     if(((CardImpl) defendingCard).getHealth()<=0){
       hero.removeCardFromField(defendingCard);
+      observerHandler.notifyCardRemove(defendingCard.getOwner(), defendingCard);
     }
     if(((CardImpl) attackingCard).getHealth()<=0){
       hero.removeCardFromField(attackingCard);
+      observerHandler.notifyCardRemove(playerAttacking, attackingCard);
     }
     return Status.OK;
   }
@@ -224,6 +245,7 @@ public class StandardHotStoneGame implements GameMutator {
     }
     HeroMutator heroDefender = getHeroM(defender);
     heroDefender.changeHealth(-attackingCard.getAttack());
+    observerHandler.notifyAttackHero(playerAttacking, attackingCard);
     return Status.OK;
   }
 
@@ -239,14 +261,15 @@ public class StandardHotStoneGame implements GameMutator {
   @Override
   public Status usePower(Player who) {
     HeroMutator attacker = getHeroM(who) ;
-    
+    observerHandler.notifyUsePower(who);
     return attacker.usePower(this, attacker );
   }
 
   @Override
   public void addObserver(GameObserver observer) {
-    
+    observerHandler.addObserver(observer);
   }
+
   @Override
   public Field getTheField(){
     return field;

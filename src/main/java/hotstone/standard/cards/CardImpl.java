@@ -12,8 +12,11 @@ public class CardImpl implements CardMutator {
     private boolean isActive;
     private Player owner;
     private CardEffect cardEffect;
+    private boolean isTaunt;
     
-    public CardImpl(String name, int manaCost, int attack, int health, boolean isActive, Player owner, CardEffect cardEffect){
+    
+    //add boolean parameter for taunt attribute?
+    public CardImpl(String name, int manaCost, int attack, int health, boolean isActive, Player owner, CardEffect cardEffect){ 
         this.name = name;
         this.manaCost = manaCost;
         this.attack = attack;
@@ -21,6 +24,21 @@ public class CardImpl implements CardMutator {
         this.isActive = isActive;
         this.owner = owner;
         this.cardEffect= cardEffect;
+    }
+
+    public CardImpl(String name, int manaCost, int attack, int health, boolean isActive, Player owner, CardEffect cardEffect, boolean isTaunt){ 
+        this.name = name;
+        this.manaCost = manaCost;
+        this.attack = attack;
+        this.health = health;
+        this.isActive = isActive;
+        this.owner = owner;
+        this.cardEffect= cardEffect;
+        this.isTaunt = isTaunt;
+    }
+
+    public boolean isTaunt() {
+        return isTaunt;
     }
 
     @Override

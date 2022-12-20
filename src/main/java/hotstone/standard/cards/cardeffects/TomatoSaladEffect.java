@@ -17,7 +17,7 @@ public class TomatoSaladEffect implements CardEffect {
     public void useEffect(GameMutator game) {
         List <Card> newAttackerCards = new ArrayList<>();
         for(Card card : game.getField(FINDUS)){
-            if(card.getOwner() != game.getTarget().getOwner()){
+            if(card.getOwner() == game.getPlayerInTurn()){
                 newAttackerCards.add(card);
             }
         }

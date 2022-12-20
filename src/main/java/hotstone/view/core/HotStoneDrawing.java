@@ -404,8 +404,7 @@ public class HotStoneDrawing implements Drawing, GameObserver {
 
   @Override
   public void onUsePower(Player who) {
-    // TODO: Inform player
-    addMessage("TODO: tell about power");
+    addMessage("" + who + " use power");
   }
 
   @Override

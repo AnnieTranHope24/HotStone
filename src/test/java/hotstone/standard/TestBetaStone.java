@@ -26,7 +26,7 @@ public class TestBetaStone {
   public void setUp() {
     game = new StandardHotStoneGame(new BetaStoneFactory());
   }
-
+ 
   @Test
   public void shouldReturnFindusForTurn0() {
     Player actual = game.getPlayerInTurn();

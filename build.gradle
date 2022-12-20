@@ -153,7 +153,6 @@ task playcard(type: JavaExec) {
 task minionattack(type: JavaExec) {
   group 'HotStone Mandatory Exercise Tools Tests'
   description 'Test-Drive the *MinionAttack Tool* Integration'
-
   mainClass = 'hotstone.tooltestcase.ShowMinionAttackTool'
   classpath = sourceSets.main.runtimeClasspath
 }

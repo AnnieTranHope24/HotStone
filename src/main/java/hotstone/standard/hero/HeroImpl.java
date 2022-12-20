@@ -48,8 +48,7 @@ public class HeroImpl implements HeroMutator{
     }
     
     public void changeHealth(int health) {
-      this.health +=
-      health;
+      this.health +=health;
     }
 
     public void damageToHealth(int damage) {

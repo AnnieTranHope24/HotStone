@@ -62,10 +62,11 @@ public class HotSeatStateTool extends NullTool {
               hsf.getType() == HotStoneFigureType.SWAP_BUTTON) {
         state = new EndTurnTool(editor, game);
       } else if (hsf.getType() == HotStoneFigureType.MINION_FIGURE) {
-        state = theNullTool;
+        state = new MinionAttackTool(editor, game, game.getPlayerInTurn());;
       } else if (hsf.getType() == HotStoneFigureType.HERO_FIGURE) {
-        state = theNullTool;
-      } else if (hsf.getType() == HotStoneFigureType.WIN_BUTTON) {
+        state = new ChangeStatsHeroTool(editor, game, game.getPlayerInTurn());
+      } else if (
+        hsf.getType() == HotStoneFigureType.WIN_BUTTON) {
         state = theNullTool; // Have to kill the window to restart.
       }
     }
@@ -73,19 +74,19 @@ public class HotSeatStateTool extends NullTool {
   }
 
   @Override
-  public void mouseUp(MouseEvent e, int x, int y) {
+  public void mouseUp(MouseEvent e, int x, int y) {  
     state.mouseUp(e, x, y);
     state = theNullTool;
   }
 
   @Override
-  public void mouseDrag(MouseEvent e, int x, int y) {
-    state.mouseDrag(e, x, y);
+  public void mouseDrag(MouseEvent e, int x, int y) {   
+    state.mouseDrag(e, x, y);   
   }
 
   @Override
-  public void mouseMove(MouseEvent e, int x, int y) {
-    state.mouseMove(e, x, y);
+  public void mouseMove(MouseEvent e, int x, int y) { 
+    state.mouseMove(e, x, y);   
   }
 
 }
