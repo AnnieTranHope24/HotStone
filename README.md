@@ -15,10 +15,16 @@ When trying to run gradle tasks that show a GUI from your WSL container,  you wi
 Steps to fix:
 
 Download and install XMing: https://sourceforge.net/projects/xming/files/Xming/6.9.0.31/
+
 This will  automatically start XMing, right click on it in the process tray and exit
+
 Right click on the icon for XMing and "Open file location"
+
 Right click on the XMing shortcut and go to properties
+
 Add -ac to the end of the Target field and click OK
+
 Launch the shortcut
+
 Run this in your WSL terminal (Ideally add it to your .bashrc):  export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
 gradle XYZ  should now open in its own window
