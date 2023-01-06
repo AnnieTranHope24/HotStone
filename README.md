@@ -1,5 +1,6 @@
 # HotStone
 HotStone Game is a card-playing game.
+
 Two players, each represents by a Hero, play against each other. 
 Each Hero has their own Power, Health, and ManaProduction, representing how many Mana that they have.
 Each Card has its own Power and ManaCost, representing how much Mana it costs to play the Card.
